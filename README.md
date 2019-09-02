@@ -5,7 +5,7 @@ Study DLib and port dlib to android with ndk/cmake.
 * DLib Official Site: http://dlib.net/
 
 ### Screenshot:
-![screenshot](https://raw.githubusercontent.com/huzongyao/AndroidDlibApp/master/misc/screen1.png)
+![screenshot](https://github.com/huzongyao/AndroidDlibApp/blob/master/misc/screen1.jpg?raw=true)
  
 ### About Me
  * GitHub: [http://huzongyao.github.io/](http://huzongyao.github.io/)
