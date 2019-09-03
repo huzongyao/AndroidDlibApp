@@ -80,5 +80,6 @@ JNI_FUNC(getLastDetected)(JNIEnv *env, jclass type, jlong instance) {
     }
     LOGD("Get Detected Rects: [%d]", bufferSize);
     env->SetLongArrayRegion(array, 0, bufferSize, buffer);
+    free(buffer);
     return array;
 }

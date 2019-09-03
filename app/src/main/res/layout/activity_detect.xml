@@ -2,12 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <Button
+        android:id="@+id/button_choose_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_a_image" />
 
     <ImageView
         android:id="@+id/demo_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f7f7f7" />
+        android:background="#f7f7f7"
+        android:maxHeight="400dp" />
 
 </LinearLayout>

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DLib</string>
     <string name="detect_from_image">Detect From Image</string>
+    <string name="choose_a_image">Choose A Image</string>
 </resources>
