@@ -11,8 +11,12 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ARouter.init(this);
         LogUtils.getConfig().setBorderSwitch(false);
         Utils.init(this);
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog();
+            ARouter.openDebug();
+        }
+        ARouter.init(this);
     }
 }
