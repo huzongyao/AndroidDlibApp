@@ -50,14 +50,12 @@ public class DetectActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                DLibDetector.INSTANCE.init();
                 DLibDetector.INSTANCE.detectFromBitmap(mDemoBitmap);
-                long[] rectList = DLibDetector.INSTANCE.getLastDetected();
-                Rect[] rects = BitmapDrawUtils.getFromLongArray(rectList);
-                BitmapDrawUtils.drawRectOnBitmap(mDemoBitmap, rects);
+                Rect[] faces = DLibDetector.INSTANCE.getLastDetectedRects();
+                BitmapDrawUtils.drawRectOnBitmap(mDemoBitmap, faces);
                 mDemoImage.post(() -> {
                     mDemoImage.setImageBitmap(mDemoBitmap);
-                    snakeBarShow(rects.length + " Faces Detected!!");
+                    snakeBarShow(faces.length + " Faces Detected!!");
                 });
             }
         }.start();

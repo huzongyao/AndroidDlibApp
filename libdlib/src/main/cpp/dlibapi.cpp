@@ -9,10 +9,7 @@
 
 JNIEXPORT jstring JNICALL
 JNI_FUNC(getVersionString)(JNIEnv *env, jclass type) {
-    char versionString[1024];
-    sprintf(versionString, "%d.%d.%d", DLIB_MAJOR_VERSION, DLIB_MINOR_VERSION, DLIB_PATCH_VERSION);
-    LOGD("Get Version String:[%s]", versionString);
-    return env->NewStringUTF(versionString);
+    return env->NewStringUTF(DLIB_VERSION);
 }
 
 JNIEXPORT jlong JNICALL

@@ -14,7 +14,12 @@
 extern "C" {
 #endif
 
-#define JNI_FUNC(x) Java_com_hzy_dlib_libdlib_DLibDetector_##x
+#define AUX_STR_EXP(__A)  #__A
+#define AUX_STR(__A)      AUX_STR_EXP(__A)
+
+#define DLIB_VERSION AUX_STR(DLIB_MAJOR_VERSION) "." AUX_STR(DLIB_MINOR_VERSION) "." AUX_STR(DLIB_PATCH_VERSION)
+
+#define JNI_FUNC(x) Java_com_hzy_dlib_libdlib_DLibApi_##x
 
 JNIEXPORT jstring JNICALL
 JNI_FUNC(getVersionString)(JNIEnv *env, jclass type);
