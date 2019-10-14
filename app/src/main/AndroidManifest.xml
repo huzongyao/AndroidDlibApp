@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DetectActivity"
+            android:name=".activity.DetectBitmapActivity"
             android:label="@string/detect_from_image" />
+        <activity
+            android:name=".activity.DetectFileActivity"
+            android:label="@string/detect_from_file" />
     </application>
 </manifest>

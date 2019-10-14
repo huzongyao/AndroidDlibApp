@@ -34,8 +34,13 @@ public class MainActivity extends AppCompatActivity {
         mVersionText.setText(String.format("DLib Version: %s", DLibApi.getVersionString()));
     }
 
-    @OnClick(R.id.detect_from_image)
-    public void onDetectImageClicked() {
-        ARouter.getInstance().build(RouterHub.DETECT_ACTIVITY).navigation();
+    @OnClick(R.id.detect_from_bitmap)
+    public void onDetectBitmapClicked() {
+        ARouter.getInstance().build(RouterHub.DETECT_BITMAP_ACTIVITY).navigation();
+    }
+
+    @OnClick(R.id.detect_from_file)
+    public void onDetectFileClicked() {
+        ARouter.getInstance().build(RouterHub.DETECT_FILE_ACTIVITY).navigation();
     }
 }

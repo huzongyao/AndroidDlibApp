@@ -27,11 +27,11 @@ JNI_FUNC(getVersionString)(JNIEnv *env, jclass type);
 JNIEXPORT jlong JNICALL
 JNI_FUNC(initDetector)(JNIEnv *env, jclass type);
 
-JNIEXPORT jint JNICALL
+JNIEXPORT jintArray JNICALL
 JNI_FUNC(detectFromBitmap)(JNIEnv *env, jclass type, jlong instance, jobject bitmap);
 
-JNIEXPORT jlongArray JNICALL
-JNI_FUNC(getLastDetected)(JNIEnv *env, jclass type, jlong instance);
+JNIEXPORT jintArray JNICALL
+JNI_FUNC(detectFromFile)(JNIEnv *env, jclass type, jlong instance, jstring filePath_);
 
 #ifdef __cplusplus
 }

@@ -2,4 +2,5 @@
     <string name="app_name">DLib</string>
     <string name="detect_from_image">Detect Faces From Bitmap</string>
     <string name="choose_a_image">Choose A Image</string>
+    <string name="detect_from_file">Detect Faces From File</string>
 </resources>

@@ -8,9 +8,9 @@ public class DLibApi {
 
     public static native long initDetector();
 
-    public static native int detectFromBitmap(long instance, Bitmap bitmap);
+    public static native int[] detectFromBitmap(long instance, Bitmap bitmap);
 
-    public static native long[] getLastDetected(long instance);
+    public static native int[] detectFromFile(long instance, String filePath);
 
     static {
         System.loadLibrary("dlib-api");

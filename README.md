@@ -5,7 +5,9 @@ Study DLib and port dlib to android with ndk/cmake.
 * DLib Official Site: http://dlib.net/
 
 ### Screenshot:
-![screenshot](https://github.com/huzongyao/AndroidDlibApp/blob/master/misc/screen1.jpg?raw=true)
+|  Screenshot | Face Detection |
+| ------------ | -------------- |
+|![pic](https://github.com/huzongyao/AndroidDlibApp/blob/master/misc/screen1.png?raw=true)|![pic](https://github.com/huzongyao/AndroidDlibApp/blob/master/misc/screen2.png?raw=true)|
  
 ### About Me
  * GitHub: [https://huzongyao.github.io/](https://huzongyao.github.io/)

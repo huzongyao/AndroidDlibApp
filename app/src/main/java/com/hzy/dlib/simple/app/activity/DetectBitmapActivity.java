@@ -6,9 +6,11 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +21,7 @@ import com.hzy.dlib.simple.app.R;
 import com.hzy.dlib.simple.app.consts.RequestCode;
 import com.hzy.dlib.simple.app.consts.RouterHub;
 import com.hzy.dlib.simple.app.utils.BitmapDrawUtils;
+import com.hzy.dlib.simple.app.utils.DetectUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Route(path = RouterHub.DETECT_ACTIVITY)
-public class DetectActivity extends AppCompatActivity {
+@Route(path = RouterHub.DETECT_BITMAP_ACTIVITY)
+public class DetectBitmapActivity extends AppCompatActivity {
 
     @BindView(R.id.demo_image)
     ImageView mDemoImage;
@@ -39,10 +42,24 @@ public class DetectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detect);
+        setContentView(R.layout.activity_detect_bitmap);
         ButterKnife.bind(this);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         loadBitmapFromImage();
         detectFromBitmap();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void detectFromBitmap() {
@@ -50,8 +67,7 @@ public class DetectActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                DLibDetector.INSTANCE.detectFromBitmap(mDemoBitmap);
-                Rect[] faces = DLibDetector.INSTANCE.getLastDetectedRects();
+                Rect[] faces = DLibDetector.INSTANCE.detectFromBitmap(mDemoBitmap);
                 BitmapDrawUtils.drawRectOnBitmap(mDemoBitmap, faces);
                 mDemoImage.post(() -> {
                     mDemoImage.setImageBitmap(mDemoBitmap);
@@ -67,7 +83,7 @@ public class DetectActivity extends AppCompatActivity {
 
     private void loadBitmapFromImage() {
         try {
-            InputStream is = getAssets().open("demo.jpg");
+            InputStream is = getAssets().open(DetectUtils.DEMO_ASSET_NAME);
             Bitmap bitmap = ImageUtils.getBitmap(is, MAX_BITMAP_SIZE, MAX_BITMAP_SIZE);
             mDemoBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
             bitmap.recycle();

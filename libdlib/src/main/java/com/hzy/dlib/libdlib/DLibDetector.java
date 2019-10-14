@@ -18,26 +18,26 @@ public enum DLibDetector {
         }
     }
 
-    public int detectFromBitmap(Bitmap bitmap) {
+    public Rect[] detectFromBitmap(Bitmap bitmap) {
         if (mInstance <= 0) {
             init();
         }
-        return DLibApi.detectFromBitmap(mInstance, bitmap);
+        return intArray2Rects(DLibApi.detectFromBitmap(mInstance, bitmap));
     }
 
-    public long[] getLastDetected() {
-        return DLibApi.getLastDetected(mInstance);
+    public Rect[] detectFromFile(String filePath) {
+        if (mInstance <= 0) {
+            init();
+        }
+        return intArray2Rects(DLibApi.detectFromFile(mInstance, filePath));
     }
 
-    public Rect[] getLastDetectedRects() {
-        long[] array = getLastDetected();
+    public static Rect[] intArray2Rects(int[] array) {
         int rectLength = array.length / 4;
         Rect[] rectArray = new Rect[rectLength];
         for (int i = 0; i < rectLength; i++) {
-            Rect rect = new Rect((int) array[i * 4],
-                    (int) array[i * 4 + 1],
-                    (int) array[i * 4 + 2],
-                    (int) array[i * 4 + 3]);
+            Rect rect = new Rect(array[i * 4], array[i * 4 + 1],
+                    array[i * 4 + 2], array[i * 4 + 3]);
             rectArray[i] = rect;
         }
         return rectArray;

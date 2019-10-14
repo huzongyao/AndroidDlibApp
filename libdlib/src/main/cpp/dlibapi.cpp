@@ -14,69 +14,58 @@ JNI_FUNC(getVersionString)(JNIEnv *env, jclass type) {
 
 JNIEXPORT jlong JNICALL
 JNI_FUNC(initDetector)(JNIEnv *env, jclass type) {
-    return (jlong) new FaceDetector();;
+    return (jlong) new FaceDetector();
 }
 
-JNIEXPORT jint JNICALL
+JNIEXPORT jintArray JNICALL
 JNI_FUNC(detectFromBitmap)(JNIEnv *env, jclass type, jlong instance, jobject bitmap) {
+    jintArray array = env->NewIntArray(0);
     auto *detector = (FaceDetector *) instance;
     if (detector == nullptr) {
         detector = new FaceDetector();
     }
     if (nullptr == bitmap) {
         LOGE("Bitmap is NULL!");
-        return -1;
+        return array;
     }
     AndroidBitmapInfo info;
     int result = AndroidBitmap_getInfo(env, bitmap, &info);
     if (result != ANDROID_BITMAP_RESULT_SUCCESS) {
         LOGE("AndroidBitmap_getInfo Failed [%d]", result);
-        return result;
+        return array;
     }
     LOGI("Bitmap Info:[%d x %d]", info.width, info.height);
-    unsigned char *rgba;
-    result = AndroidBitmap_lockPixels(env, bitmap, (void **) &rgba);
+    void *rgba;
+    result = AndroidBitmap_lockPixels(env, bitmap, &rgba);
     if (result != ANDROID_BITMAP_RESULT_SUCCESS) {
         LOGE("AndroidBitmap_lockPixels Failed [%d]", result);
-        return result;
+        return array;
     }
-    detector->startDetect(rgba, info.width, info.height);
+    std::vector<rectangle> rectangles = detector->detectFromRGBA(rgba, info.width, info.height);
+    array = FaceDetector::rectangle2JintArray(env, rectangles);
     result = AndroidBitmap_unlockPixels(env, bitmap);
     if (result != ANDROID_BITMAP_RESULT_SUCCESS) {
         LOGE("AndroidBitmap_unlockPixels Failed [%d]", result);
-        return result;
+        return array;
     }
-    return 0;
+    return array;
 }
 
-JNIEXPORT jlongArray JNICALL
-JNI_FUNC(getLastDetected)(JNIEnv *env, jclass type, jlong instance) {
+JNIEXPORT jintArray JNICALL
+JNI_FUNC(detectFromFile)(JNIEnv *env, jclass type, jlong instance, jstring filePath_) {
+    const char *filePath = env->GetStringUTFChars(filePath_, nullptr);
+    jintArray array = env->NewIntArray(0);
     auto *detector = (FaceDetector *) instance;
     if (detector == nullptr) {
-        return env->NewLongArray(0);
+        detector = new FaceDetector();
     }
-    std::vector<rectangle> last_detected = detector->getLastDetected();
-    if (last_detected.empty()) {
-        return env->NewLongArray(0);
+    if (nullptr == filePath) {
+        LOGE("filePath is NULL!");
+        env->ReleaseStringUTFChars(filePath_, filePath);
+        return array;
     }
-    unsigned int bufferSize = last_detected.size() * 4;
-    jlongArray array = env->NewLongArray(bufferSize);
-    auto *buffer = (jlong *) malloc(sizeof(jlong) * bufferSize);
-    auto it = last_detected.begin();
-    int index = 0;
-    for (; it != last_detected.end(); ++it) {
-        long l = (*it).left();
-        long r = (*it).right();
-        long t = (*it).top();
-        long b = (*it).bottom();
-        buffer[index * 4] = l;
-        buffer[index * 4 + 1] = t;
-        buffer[index * 4 + 2] = r;
-        buffer[index * 4 + 3] = b;
-        index++;
-    }
-    LOGD("Get Detected Rects: [%d]", bufferSize);
-    env->SetLongArrayRegion(array, 0, bufferSize, buffer);
-    free(buffer);
+    std::vector<rectangle> rectangles = detector->detectFromFile(filePath);
+    array = FaceDetector::rectangle2JintArray(env, rectangles);
+    env->ReleaseStringUTFChars(filePath_, filePath);
     return array;
 }
