@@ -53,17 +53,12 @@ FaceDetector::rectangle2JintArray(JNIEnv *env, std::vector<rectangle> &rectangle
     unsigned int bufferSize = rectangles.size() * 4;
     jintArray array = env->NewIntArray(bufferSize);
     auto *buffer = (jint *) malloc(sizeof(jint) * bufferSize);
-    auto it = rectangles.begin();
     int index = 0;
-    for (; it != rectangles.end(); ++it) {
-        int l = (*it).left();
-        int r = (*it).right();
-        int t = (*it).top();
-        int b = (*it).bottom();
-        buffer[index * 4] = l;
-        buffer[index * 4 + 1] = t;
-        buffer[index * 4 + 2] = r;
-        buffer[index * 4 + 3] = b;
+    for (auto it: rectangles) {
+        buffer[index * 4] = it.left();
+        buffer[index * 4 + 1] = it.top();
+        buffer[index * 4 + 2] = it.right();
+        buffer[index * 4 + 3] = it.bottom();
         index++;
     }
     LOGD("Get Detected Rects: [%d]", bufferSize);
